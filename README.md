@@ -8,4 +8,4 @@ Our goal is to build with an Arduino and it's modules a tool, with which everybo
 
 To archive this goal we build ont he one hand the actual Hardware and on the other hand a webpage to make people aware, and give them a plattform to track their data and share it with others.
 
-Copyright: Andra Metrina, Jonas Pfaff
+Copyright: Andra Metrina (Latvia), Jonas Pfaff (Germany), Epitech School Paris (France)
