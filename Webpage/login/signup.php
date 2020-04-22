@@ -17,7 +17,7 @@
   <!-- Fonti -->
 <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Open+Sans" rel="stylesheet">
 
-  <!-- Custom styles-->
+  <!-- Custom styles -->
   <link href="css/get-beauty.min.css" rel="stylesheet">
 
 </head>
@@ -34,7 +34,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     // Lietotājavārda konfirmācija
     if(empty(trim($_POST["username"]))){
-        $lietotajvards_err= "Enter your username";
+        $lietotajvards_err= "Please enter your username";
     } else{
         $sql = "SELECT User_ID FROM User WHERE username = ?";
 
@@ -48,12 +48,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 mysqli_stmt_store_result($stmt);
 
                 if(mysqli_stmt_num_rows($stmt) == 1){
-                    $lietotajvards_err = "This user is already registered";
+                    $lietotajvards_err = "You have account already, don't be shy- login!";
                 } else{
                     $lietotajvards = trim($_POST["username"]);
                 }
             } else{
-                echo "Oops! Failed to register user!";
+                echo "Please try again!";
             }
         }
         mysqli_stmt_close($stmt);
@@ -69,14 +69,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     if(empty(trim($_POST["confirm_password"]))){
-        $con_parole_err = "Please confirm the password";
+        $con_parole_err = "Please confirm your password";
     } else{
         $con_parole = trim($_POST["confirm_password"]);
         if(empty($parole_err) && ($parole != $con_parole)){
-            $con_parole_err = "Passwords do not match";
+            $con_parole_err = "Passwords doesn't match, try again!";
         }
     }
-    //Pārbauda errors pirms ieraksta datubāzē
+    //Checks for errors before entering into the database
     if(empty($lietotajvards_err) && empty($parole_err) && empty($con_parole_err)){
 
         $sql = "INSERT INTO User (username, password) VALUES (NULL, ?, ?)";
@@ -85,13 +85,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             mysqli_stmt_bind_param($stmt, "ss", $param_lietotajvards, $param_parole);
 
             $param_lietotajvards = $lietotajvards;
-            $param_parole = password_hash($parole, PASSWORD_DEFAULT); // Passwort to hash
+            $param_parole = password_hash($parole, PASSWORD_DEFAULT); // Paroles hash code
 
             if(mysqli_stmt_execute($stmt)){
                 // Pārmet uz login lapu
-                header("location: tresais.php");
+                header("location: registration.php");
             } else{
-                echo "Oops! Failed, please try again later!";
+                echo " Please try again!";
             }
         }
          mysqli_stmt_close($stmt);
@@ -110,10 +110,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="signup.html">Sign Up</a>
+            <a class="nav-link" href="signup.php">Sign Up</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Log In</a>
+            <a class="nav-link" href="registration.php">Log In</a>
           </li>
         </ul>
       </div>
@@ -127,13 +127,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2">
           <div class="p-5">
-            <img class="img-fluid rounded-circle" src="img/04.jpg" alt="">
+            <img class="img-fluid " src="img/newfriend.gif" alt="">
           </div>
         </div>
         <div class="col-lg-6 order-lg-1">
           <div class="p-5">
             <h2 class="display-4">Welcome, new friend...</h2>
-            <p>Create your profile to stay tuned with upcoming news from us and get all the news about getting around in Valmiera first!</p>
+            <p>Create your profile to say tuned with upcoming news and all the news about getting around in Valmiera first!</p>
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group <?php echo (!empty($lietotajvards_err)) ? 'has-error' : ''; ?>">
                 <label>Username</label>
@@ -152,7 +152,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Create profile">
-                <input type="reset" class="btn btn-default" value="Clean up!">
+                
             </div>
             <p>Have account already? <a href="registration.php">Login</a></p>
         </form>

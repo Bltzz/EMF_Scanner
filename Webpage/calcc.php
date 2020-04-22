@@ -22,7 +22,6 @@
 
 var sum;
 var a;
-         <!--
             function display() {
               if (a==null){
                 alert("Please choose Discount type!")
@@ -41,7 +40,7 @@ var a;
               sum  = b*a;
               sum = sum.toFixed(2);
               document.getElementById("info2").innerHTML ="Monthly working day ticket full price is 18.60 Eur. With your discount it is:  " + sum+" Eur!";
-              }  
+              }
             }
             function display5() {
               if (a==null){
@@ -61,7 +60,7 @@ var a;
               sum  = b*a;
               sum = sum.toFixed(2);
               document.getElementById("info2").innerHTML ="One time ticket full price is 0.60 Eur. With your discount it is:  " + sum+" Eur!";
-              }    
+              }
             }
             function display7() {
               if (a==null){
