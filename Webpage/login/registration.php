@@ -59,7 +59,7 @@
     // Pārbauda ievadītos datus
     if (empty($lietotajvards_err) && empty($parole_err)) {
       //dabu baze
-      $sql = "SELECT User_ID, User_username, password FROM User WHERE username = ?";
+      $sql = "SELECT User_ID, username, password FROM User WHERE username = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
         // Bind parametrs

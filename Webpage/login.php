@@ -79,7 +79,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     //Pārbauda errors pirms ieraksta datubāzē
     if(empty($lietotajvards_err) && empty($parole_err) && empty($con_parole_err)){
 
-        $sql = "INSERT INTO User (username, password) VALUES (NULL, ?, ?)";
+        $sql = "INSERT INTO User (username, password) VALUES (?, ?)";
 
         if($stmt = mysqli_prepare($link, $sql)){
             mysqli_stmt_bind_param($stmt, "ss", $param_lietotajvards, $param_parole);
