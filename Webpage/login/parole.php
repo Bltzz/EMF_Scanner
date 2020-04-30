@@ -30,79 +30,63 @@
   <!--===============================================================================================-->
 </head>
 
-
 <body>
 
   <?php
+
+  session_start();
+
+  if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: registration.php");
+    exit;
+  }
+
+  // Include config file
   require_once "serverConnection.php";
 
-  $lietotajvards = $parole = $con_parole = "";
-  $lietotajvards_err = $parole_err = $con_parole_err = "";
+
+  $jauna_parole = $con_parole = "";
+  $jauna_parole_err = $con_parole_err = "";
 
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Lietotājavārda konfirmācija
-    if (empty(trim($_POST["username"]))) {
-      $lietotajvards_err = "Enter your username";
+    if (empty(trim($_POST["new_password"]))) {
+      $jauna_parole_err = "Type new password";
+    } elseif (strlen(trim($_POST["new_password"])) < 6) {
+      $jauna_parole_err = "Password needs to contain atleast 6 characters!";
     } else {
-      $sql = "SELECT User_ID FROM User WHERE username = ?";
-
-      if ($stmt = mysqli_prepare($link, $sql)) {
-
-        mysqli_stmt_bind_param($stmt, "s", $param_lietotajvards);
-
-        $param_lietotajvards = trim($_POST["username"]);
-
-        if (mysqli_stmt_execute($stmt)) {
-          mysqli_stmt_store_result($stmt);
-
-          if (mysqli_stmt_num_rows($stmt) == 1) {
-            $lietotajvards_err = "This user is already registered";
-          } else {
-            $lietotajvards = trim($_POST["username"]);
-          }
-        } else {
-          echo "Oops! Failed to register user!";
-        }
-      }
-      mysqli_stmt_close($stmt);
-    }
-
-    //paroles konfirmācija
-    if (empty(trim($_POST["password"]))) {
-      $parole_err = "Please enter a password.";
-    } elseif (strlen(trim($_POST["password"])) < 10 || strlen(trim($_POST["password"])) > 50) {
-      $parole_err = "Password must have at least 10 and maximum 50 characters.";
-    } else {
-      $parole = trim($_POST["password"]);
+      $jauna_parole = trim($_POST["new_password"]);
     }
 
     if (empty(trim($_POST["confirm_password"]))) {
-      $con_parole_err = "Please confirm the password";
+      $con_parole_err = "Confirm password";
     } else {
       $con_parole = trim($_POST["confirm_password"]);
-      if (empty($parole_err) && ($parole != $con_parole)) {
-        $con_parole_err = "Passwords do not match";
+      if (empty($jauna_parole_err) && ($jauna_parole != $con_parole)) {
+        $con_parole_err = "Passwords don't match!";
       }
     }
-    //Pārbauda errors pirms ieraksta datubāzē
-    if (empty($lietotajvards_err) && empty($parole_err) && empty($con_parole_err)) {
 
-      $sql = "INSERT INTO User (username, password) VALUES (?, ?)";
+    if (empty($jauna_parole_err) && empty($con_parole_err)) {
+
+      $sql = "UPDATE lietotaji SET password = ? WHERE id = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
-        mysqli_stmt_bind_param($stmt, "ss", $param_lietotajvards, $param_parole);
 
-        $param_lietotajvards = $lietotajvards;
-        $param_parole = password_hash($parole, PASSWORD_DEFAULT); // Passwort to hash
+        mysqli_stmt_bind_param($stmt, "si", $param_parole, $param_id);
+
+        $param_parole = password_hash($jauna_parole, PASSWORD_DEFAULT);
+        $param_id = $_SESSION["id"];
 
         if (mysqli_stmt_execute($stmt)) {
-          // Pārmet uz login lapu
+          session_destroy();
           header("location: tresais.php");
+          exit();
         } else {
-          echo "Oops! Failed, please try again later!";
+          echo "Whoops! Didn't work.";
         }
       }
+
       mysqli_stmt_close($stmt);
     }
 
@@ -120,9 +104,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="signup.html">Sign Up</a>
-          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="registration.php">Sign Up</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="login.php">Log In</a>
           </li>
@@ -138,36 +122,32 @@
       <div class="container-login100">
         <div class="wrap-login100" >
             <div class="p-5">
-              <h2 class="login100-form-title p-b-33">Welcome, new friend...</h2>
-              <p>Create your profile to stay tuned with upcoming news from us and track your daily EMF load.</p>
-              <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <div class="form-group wrap-input100 validate-input <?php echo (!empty($lietotajvards_err)) ? 'has-error' : ''; ?>">
-                  <label>Username</label>
-                  <input type="text" name="username" class="form-control input100" placeholder="Username" value="<?php echo $lietotajvards; ?>">
-                  <span class="help-block"><?php echo $lietotajvards_err; ?></span>
-                </div>
-                <div class="form-group wrap-input100 rs1 validate-input <?php echo (!empty($parole_err)) ? 'has-error' : ''; ?>"  data-validate="Password is required">
-                  <label>Password</label>
-                  <input type="password" name="password" class="form-control input100" type="password" placeholder="Password" value="<?php echo $parole; ?>">
-                  <span class="help-block"><?php echo $parole_err; ?></span>
-                </div>
-                <div class="form-group wrap-input100 rs1 validate-input <?php echo (!empty($con_parole_err)) ? 'has-error' : ''; ?>">
-                  <label>Confirm password</label>
-                  <input type="password" name="confirm_password" class="form-control input100" type="password" placeholder="Type Password again" value="<?php echo $con_parole; ?>">
-                  <span class="help-block"><?php echo $con_parole_err; ?></span>
-                </div>
-                <div class="container-login100-form-btn m-t-20">
+            <h2 class="login100-form-title p-b-33">Security first</h2>
+            <h2 class="login100-form-title p-b-33">Reset your password</h2>
+            <!-- <p>Please fill in all the fields.</p> -->
+            <form  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+              <div class="form-group rs1 validate-input <?php echo (!empty($jauna_parole_err)) ? 'has-error' : ''; ?>">
+                <label>New Password</label>
+                <input type="password" name="new_password" class="form-control input100" value="<?php echo $jauna_parole; ?>">
+                <span class="help-block"><?php echo $jauna_parole_err; ?></span>
+              </div>
+              <div class="form-group rs1 validate-input <?php echo (!empty($con_parole_err)) ? 'has-error' : ''; ?>">
+                <label>Re-type Password</label>
+                <input type="password" name="confirm_password" class="form-control input100">
+                <span class="help-block"><?php echo $con_parole_err; ?></span>
+              </div>
+              <div class="container-login100-form-btn m-t-20">
                   <button class="login100-form-btn" href="../Home/index.html">
-                    Sign in
+                    Reset Password
                   </button>
                 </div>
-                <p>Have account already? <a href="login.php">Login</a></p>
-              </form>
-            </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- Footer -->
   <footer class="py-5 bg-black">
