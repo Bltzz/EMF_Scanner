@@ -34,41 +34,41 @@
 <body>
 
   <?php
-  // sākt sesiju
+  // start session
   session_start();
 
-  // Paŗbauda, vai lietotājs ir piereģistrējies, ja jā iet uz welcome lapu
+  // Checks if the user is registered, if so go to the welcome page
   if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
-    header("location: userprofile1.php");
+    header("location: ../Home/userprofile1.php");
     exit;
   }
 
-  // savienojums ar db
+  // db connection
   require_once "serverConnection.php";
 
   $lietotajvards = $parole = "";
   $lietotajvards_err = $parole_err = "";
 
-  // Apstrādā datus no formas
+  // Processes data from a form
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // Pārbauda vai username nav tukšs
+    // Checks if the username is empty
     if (empty(trim($_POST["username"]))) {
       $lietotajvards_err = "Please enter a username.";
     } else {
       $lietotajvards = trim($_POST["username"]);
     }
 
-    // Pārbauda vai parole nav tukša
+    // Check that the password is not blank
     if (empty(trim($_POST["password"]))) {
       $parole_err = "Please enter a password.";
     } else {
       $parole = trim($_POST["password"]);
     }
 
-    // Pārbauda ievadītos datus
+    //Checks the entered data
     if (empty($lietotajvards_err) && empty($parole_err)) {
-      //dabu baze
+      // database
       $sql = "SELECT User_ID, username, password FROM User WHERE username = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
@@ -79,18 +79,18 @@
         $param_lietotajvards = $lietotajvards;
 
         if (mysqli_stmt_execute($stmt)) {
-          // noglabaa rezultatu
+          // save the result
           mysqli_stmt_store_result($stmt);
 
-          // parbauda vai ir tads lietotajs, ja ir salidzina paroli
+          // checks if there is a user if there is a comparison of the password
           if (mysqli_stmt_num_rows($stmt) == 1) {
             mysqli_stmt_bind_result($stmt, $id, $lietotajvards, $hashed_password);
             if (mysqli_stmt_fetch($stmt)) {
               if (password_verify($parole, $hashed_password)) {
-                if (!empty($_POST["remember"])) { //izveido cookies
+                if (!empty($_POST["remember"])) { //creates cookies
                   setcookie("username", $_POST["username"], time() + (10 * 365 * 24 * 60 * 60));
                   setcookie("password", $_POST["password"], time() + (10 * 365 * 24 * 60 * 60));
-                } else { //Izdzēš cookies value, ja neatzīmē
+                } else { //Deletes cookies value if unchecked
                   if (isset($_COOKIE["username"])) {
                     setcookie("username", " ");
                   }
@@ -108,8 +108,8 @@
                 $_SESSION["id"] = $id;
                 $_SESSION["username"] = $lietotajvards;
 
-                // Uz welcome lapu
-                header("location: userprofile1.php");
+                // forward to welcome page
+                header("location: ../Home/userprofile1.php");
               } else {
 
                 $parole_err = "Invalid password";
@@ -156,7 +156,7 @@
   <section>
     <div class="limiter">
       <div class="container-login100">
-        <div class="wrap-login100" >
+        <div class="wrap-login100">
           <div class="p-5">
             <h2 class="login100-form-title p-b-33">You're about to login into your profile</h2>
             <p>Sign in with your username and password</p>
@@ -181,10 +181,10 @@
                 <label for="remember-me">Remember me</label>
               </div>
               <div class="container-login100-form-btn m-t-20">
-                  <button class="login100-form-btn" href="../Home/index.html">
-                    Log in
-                  </button>
-                </div>
+                <button class="login100-form-btn" href="../Home/index.html">
+                  Log in
+                </button>
+              </div>
               <p>Don't have an account? <a href="registration.php">Sign up here!</a></p>
             </form>
 
@@ -198,8 +198,8 @@
   <!-- Footer -->
   <footer class="py-5 bg-black">
     <div class="container">
-      <p class="m-0 text-center text-white small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
-      <p class="m-0  text-center text-white small"><img src="images/email.png" alt="email" width="30" height="30"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
+      <p class="m-0 text-center text-black small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
+      <p class="m-0  text-center text-black small"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
     </div>
     <!-- /.container -->
   </footer>

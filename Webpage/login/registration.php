@@ -172,8 +172,8 @@
   <!-- Footer -->
   <footer class="py-5 bg-black">
     <div class="container">
-      <p class="m-0 text-center text-white small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
-      <p class="m-0  text-center text-white small"><img src="images/email.png" alt="email" width="30" height="30"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
+      <p class="m-0 text-center text-black small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
+      <p class="m-0  text-center text-black small"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
     </div>
     <!-- /.container -->
   </footer>

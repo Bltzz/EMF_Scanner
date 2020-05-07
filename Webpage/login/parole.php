@@ -69,7 +69,7 @@
 
     if (empty($jauna_parole_err) && empty($con_parole_err)) {
 
-      $sql = "UPDATE lietotaji SET password = ? WHERE id = ?";
+      $sql = "UPDATE User SET password = ? WHERE id = ?";
 
       if ($stmt = mysqli_prepare($link, $sql)) {
 
@@ -120,12 +120,12 @@
   <section>
     <div class="limiter">
       <div class="container-login100">
-        <div class="wrap-login100" >
-            <div class="p-5">
+        <div class="wrap-login100">
+          <div class="p-5">
             <h2 class="login100-form-title p-b-33">Security first</h2>
             <h2 class="login100-form-title p-b-33">Reset your password</h2>
             <!-- <p>Please fill in all the fields.</p> -->
-            <form  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
               <div class="form-group rs1 validate-input <?php echo (!empty($jauna_parole_err)) ? 'has-error' : ''; ?>">
                 <label>New Password</label>
                 <input type="password" name="new_password" class="form-control input100" value="<?php echo $jauna_parole; ?>">
@@ -137,10 +137,10 @@
                 <span class="help-block"><?php echo $con_parole_err; ?></span>
               </div>
               <div class="container-login100-form-btn m-t-20">
-                  <button class="login100-form-btn" href="../Home/index.html">
-                    Reset Password
-                  </button>
-                </div>
+                <button class="login100-form-btn" href="../Home/index.html">
+                  Reset Password
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -152,8 +152,8 @@
   <!-- Footer -->
   <footer class="py-5 bg-black">
     <div class="container">
-      <p class="m-0 text-center text-white small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
-      <p class="m-0  text-center text-white small"><img src="images/email.png" alt="email" width="30" height="30"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
+      <p class="m-0 text-center text-black small">Copyright &copy; Andra and Jonas - Students @ Epitech Paris</p>
+      <p class="m-0  text-center text-black small"><a href="mailto:jonas.pfaff@epitech.eu">jonas.pfaff@epitech.eu</a></p>
     </div>
     <!-- /.container -->
   </footer>
