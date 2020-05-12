@@ -81,8 +81,8 @@
               $valid_ext = array('png', 'jpeg', 'jpg');
 
               // Location
-              $location = "photos/" . $filename;
-              $thumbnail_location = "photos/thumbnail/" . $filename;
+              $location = "../Home/photos/" . $filename;
+              $thumbnail_location = "../Home/photos/thumbnail/" . $filename;
 
               // file extension
               $file_extension = pathinfo($location, PATHINFO_EXTENSION);
@@ -125,7 +125,7 @@
             ?>
             <br>
             <br>
-            <a href="userprofile1.php" class="button btn btn-warning">Take me back!</a>
+            <a href="../Home/userprofile1.php" class="button btn btn-warning">Take me back!</a>
           </div>
         </div>
       </div>

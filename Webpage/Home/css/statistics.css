@@ -131,7 +131,7 @@ panel {
 }
 
 .panel-header {
-    display: flex;
+    display: flexbox;
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
@@ -140,14 +140,14 @@ panel {
 }
 
 .title {
-    color: #5E6977;
+    color: rgb(41, 42, 44);
     font-weight: 500;
 }
 
 .calendar-views span {
     font-size: 14px;
     font-weight: 300;
-    color: #BDC6CF;
+    color: rgb(27, 29, 31);
     padding: 6px 14px;
     border: 2px solid transparent;
 }
@@ -191,30 +191,30 @@ panel {
 }
 
 .chart {
-    width: 100%;
+    width: 70%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    flex-grow: 2;
+    flex-grow: 3;
     position: relative;
 }
 
-.operating-systems {
+.radiation {
     display: flex;
     justify-content: space-between;
-    width: 215px;
+    width: 350px;
     margin-top: 30px;
     margin-bottom: 50px;
 }
 
-span[class*="-os"] {
+span[class*="-radiation"] {
     font-size: 14px;
     font-weight: 300;
     font-size: 14px;
-    color: #c3c6e4;
+    color: #232324;
 }
 
-span[class*="-os"] span {
+span[class*="-radiation"] span {
     width: 9px;
     height: 9px;
     display: inline-block;
@@ -222,25 +222,25 @@ span[class*="-os"] span {
     margin-right: 9px;
 }
 
-.android-os span {
+.other-radiation span {
     background: #80B354;
 }
 
-.ios-os span {
+.EMF-radiation span {
     background: #F5A623;
 }
 
-.windows-os span {
-    background: #F8E71C;
+.radioactive-radiation span {
+    background: rgb(240, 4, 4);
 }
 
 div[class*="-stats"] {
     position: absolute;
-    color: #fff;
+    color: #000000;
     font-size: 12px;
     display: flex;
     opacity: 0;
-    animation: showstats 0.6s linear 1.8s;
+    animation: showstats 0.6s linear 0.8s;
     animation-fill-mode: forwards;
 }
 
@@ -248,7 +248,7 @@ div[class*="-stats"] span {
     height: 12px;
     width: 12px;
     margin: 0 7px;
-    background-color: #fff;
+    background-color: #1dc6f0;
     border: 2px solid transparent;
     border-radius: 50%;
 }
@@ -260,31 +260,31 @@ div[class*="-stats"] span:hover {
     transition: transform 0.2s ease-in-out;
 }
 
-.android-stats {
-    bottom: 155px;
-    right: 230px;
+.radioactive-stats {
+    bottom: 140px;
+    right: 670px;
 }
 
-.android-stats span:hover {
-    background: #80B354;
-}
-
-.ios-stats {
-    bottom: 83px;
-    left: 133px;
-}
-
-.ios-stats span:hover {
+.radioactive-stats span:hover {
     background: #F5A623;
 }
 
-.windows-stats {
-    bottom: 133px;
-    right: 62px;
+.EMF-stats {
+    bottom: 180px;
+    left: 70px;
 }
 
-.windows-stats span:hover {
-    background: #F8E71C;
+.EMF-stats span:hover {
+    background: #80B354;
+}
+
+.other-stats {
+    bottom: 128px;
+    right: 825px;
+}
+
+.other-stats span:hover {
+    background: F5A623(240, 4, 4);
 }
 
 .dataset-1 {
